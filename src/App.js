@@ -4,6 +4,7 @@ import {
   Route,
   Switch,
 } from 'react-router-dom';
+import './App.css';
 import Header from './Header.js';
 import DetailPage from './DetailPage.js';
 import BeeInventor from './BeeInventor.js';
