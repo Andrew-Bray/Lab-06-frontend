@@ -2,6 +2,26 @@
   text-align: center;
 }
 
+header {
+  display: flex;
+  flex-direction:column;
+ align-items: center;
+
+}
+
+.navlinks {
+  float: right;
+  display: flex;
+  flex-direction: column;
+  align-items: right;
+}
+
+.beeform {
+  display:flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
 .App-logo {
   height: 40vmin;
   pointer-events: none;
