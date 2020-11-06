@@ -10,6 +10,7 @@ export default class Header extends Component {
         <div className="navlinks">
           <Link to="/">That Bee List</Link>
           <Link to="/beeinventor">Bee Inventor</Link>
+          <Link to="/details/:id"></Link>
         </div>
       </header>
     )

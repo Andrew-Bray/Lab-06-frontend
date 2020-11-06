@@ -1,46 +1,109 @@
-import React, { Component } from 'react'
-import './App.css';
-import fetch from 'superagent';
+import React, { Component } from 'react';
+import { fetchBee, updateBee, fetchNames } from './Fetches.js';
 
-export default class DetailPage extends Component {
-    state = {
-        beeStuff: [],
-    }
+const genericUser = {
+  userId: 1
+};
 
-    fetchBees = async () => {
-        const response = await fetch.get(`https://afternoon-sands-77287.herokuapp.com/bees`);
-        this.setState({ beeStuff: response.body });
-        console.log(response.body);
-    }
+export default class detail extends Component {
 
-    componentDidMount = async () => {
-        await this.fetchBees();
-    }
+  state = {
+    names: [],
+    fr: 0,
+    dom: true,
+    win: 1,
+    char: '',
+  }
 
-    render() {
-        return (
-            <div className="bee-container">
-                <h1>Chadwick's Collegiate Collection of the <i>Apis Mellifera</i></h1>
-                <h3>Where you find all of your bee needs solved</h3>
-                <section className="bee-list">
-                    {this.state.beeStuff.map(bee =>
-                        <div className="bee-item">
-                            <h2>The {bee.name} Bee</h2>
-                            <p>Overwintering: {bee.winterization}</p>
-                            <p>{bee.characteristics}</p>
-                            <p>Friendliness Factor: {bee.friendliness}</p>
-                            {
-                                bee.domesticated
-                                    ? <div className="domesticated"> These ladies are domesticated
-                                </div> :
-                                    <div className="feral"> These girls are a wild bunch!
-                                </div>
-                            }
-                        </div>
-                    )}
-                </section>
 
-            </div>
-        )
-    }
+  componentDidMount = async () => {
+    const names = await fetchNames(this.props.match.params.id);
+    const bee = await fetchBee(this.props.match.params.id);
+
+    //NOW do a find where we return the 'names" where the names.name and the bee.name match
+    const beeNameAsAString = bee.name;
+    console.log(bee.name);
+
+    const matchingName = names.find((name) => {
+      return name.name === beeNameAsAString;
+    })
+
+    this.setState({
+      names: names,
+      nameId: matchingName.id,
+      fr: bee.friendliness,
+      dom: bee.domesticated,
+      win: bee.winterization,
+      char: bee.characteristics
+    });
+  }
+
+  //submit actions
+  handleSubmit = async (e) => {
+    e.preventDefault();
+
+    //making a new bee from the form data ANd the generic user
+    const newBee = {
+      name_id: this.state.nameId,
+      friendliness: this.state.fr,
+      domesticated: this.state.dom,
+      winterization: this.state.win,
+      characteristics: this.state.char,
+      owner_id: genericUser.userId,
+    };
+
+    //send data to our endpoint useing post and send
+    updateBee(this.props.match.params.id, newBee);
+
+    //take folks back to the bee page
+    this.props.history.push('/');
+  }
+  //handling the name change
+  handleNameChange = (e) => {
+    this.setState({ nameId: e.target.value })
+  }
+
+  render() {
+    return (
+      <div className="inventpage">
+        <h2>Lets update a bee together</h2>
+        <form className="beeform" onSubmit={this.handleSubmit}>
+          <label>
+            Bee Name
+              <select onChange={this.handleNameChange}>
+              {this.state.names.map(name =>
+                <option
+                  selected={this.state.nameID === name.id}
+                  key={name.id}
+                  value={name.id}>
+                  {name.name}
+                </option>
+              )}
+            </select>
+          </label>
+          <label>
+            How Friendly?
+            <input value={this.state.fr} onChange={e => this.setState({ fr: e.target.value })} type="number" />
+          </label>
+          <label>
+            Are these ladies domesticated?
+            <select value={this.state.dom} onChange={e => this.setState({ dom: e.target.value })}>
+              <option value="">select</option>
+              <option value="true">Yes</option>
+              <option value="false">No</option>
+            </select>
+          </label>
+          <label>
+            How well do they handle cold winters?
+            <input value={this.state.win} vonChange={e => this.setState({ win: e.target.value })} type="number" />
+          </label>
+          <label>
+            Tell us a little about them
+            <input value={this.state.char} onChange={e => this.setState({ char: e.target.value })} type="text" />
+          </label>
+          <button>Submit your bee</button>
+        </form>
+      </div>
+    )
+  }
 }

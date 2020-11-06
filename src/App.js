@@ -6,8 +6,9 @@ import {
 } from 'react-router-dom';
 import './App.css';
 import Header from './Header.js';
-import DetailPage from './DetailPage.js';
+import ListPage from './ListPage.js';
 import BeeInventor from './BeeInventor.js';
+import DetailPage from './DetailPage.js';
 
 export default class App extends Component {
   render() {
@@ -17,12 +18,17 @@ export default class App extends Component {
           <Header />
           <Switch>
             <Route
+              path="/"
+              exact
+              render={(routerProps) => <ListPage {...routerProps} />}
+            />
+            <Route
               path="/beeinventor"
               exact
               render={(routerProps) => <BeeInventor {...routerProps} />}
             />
             <Route
-              path="/"
+              path="/details/:id"
               exact
               render={(routerProps) => <DetailPage {...routerProps} />}
             />

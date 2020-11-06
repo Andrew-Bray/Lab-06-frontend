@@ -1,7 +1,7 @@
 .app-container {
   text-align: center;
   color: firebrick;
-  background-image: url(.//bee_wallpaper.png);
+  background-image: url(./bee_wallpaper.png);
 }
 
 header {
