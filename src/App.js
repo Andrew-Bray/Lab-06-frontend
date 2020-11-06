@@ -12,7 +12,7 @@ import BeeInventor from './BeeInventor.js';
 export default class App extends Component {
   render() {
     return (
-      <div>
+      <div >
         <Router>
           <Header />
           <Switch>

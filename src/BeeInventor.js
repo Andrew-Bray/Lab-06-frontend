@@ -50,8 +50,8 @@ export default class BeeInventor extends Component {
 
   render() {
     return (
-      <div>
-        I am  Bee Page. Lets make a bee together
+      <div className="inventpage">
+        <h2>Lets make a bee together</h2>
         <form className="beeform" onSubmit={this.handleSubmit}>
           <label>
             Bee Name
@@ -68,8 +68,12 @@ export default class BeeInventor extends Component {
             <input onChange={e => this.setState({ friendliness: e.target.value })} type="number" />
           </label>
           <label>
-            Are these ladies domesticated? (true or false)
-            <input onChange={e => this.setState({ domesticated: e.target.value })} type="text" />
+            Are these ladies domesticated?
+            <select onChange={e => this.setState({ domesticated: e.target.value })}>
+              <option value="">select</option>
+              <option value="true">Yes</option>
+              <option value="false">No</option>
+            </select>
           </label>
           <label>
             How well do they handle cold winters?

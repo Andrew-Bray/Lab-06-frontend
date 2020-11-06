@@ -19,9 +19,9 @@ export default class DetailPage extends Component {
 
     render() {
         return (
-            <div>
+            <div className="bee-container">
                 <h1>Chadwick's Collegiate Collection of the <i>Apis Mellifera</i></h1>
-                <p> Still need to get the create bee page with form and dropdown</p>
+                <h3>Where you find all of your bee needs solved</h3>
                 <section className="bee-list">
                     {this.state.beeStuff.map(bee =>
                         <div className="bee-item">
