@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import request from 'superagent';
-import fetch from 'superagent';
+import { fetchNames, createBee } from './Fetches.js';
 
 const genericUser = {
   userId: 1
@@ -9,17 +8,17 @@ const genericUser = {
 export default class BeeInventor extends Component {
 
   state = {
-    names: []
-  }
-  fetchBees = async () => {
-    const response = await fetch.get(`https://afternoon-sands-77287.herokuapp.com/friends`);
-    this.setState({ names: response.body });
-    console.log(response.body);
+    names: [],
+    bees: {},
   }
 
   componentDidMount = async () => {
-    this.fetchBees();
+    const names = await fetchNames();
+    this.setState({ names });
+
   }
+  //this is where I left off. Not terrible. But slow!!
+
 
   //submit actions
   handleSubmit = async (e) => {
@@ -36,9 +35,7 @@ export default class BeeInventor extends Component {
     };
 
     //send data to our endpoint useing post and send
-    await request
-      .post(`https://afternoon-sands-77287.herokuapp.com/bees`)
-      .send(newBee);
+    createBee(newBee);
 
     //take folks back to the bee page
     this.props.history.push('/');
