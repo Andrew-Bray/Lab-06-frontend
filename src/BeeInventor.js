@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
-import { fetchNames, createBee } from './Fetches.js';
+import request from 'superagent';
+import { fetchNames, createBee, newBeeName } from './Fetches.js';
 
 const genericUser = {
-  userId: 1
+  userId: 1,
+
 };
 
 export default class BeeInventor extends Component {
@@ -35,14 +37,26 @@ export default class BeeInventor extends Component {
     };
 
     //send data to our endpoint useing post and send
-    createBee(newBee);
+    await createBee(newBee);
 
     //take folks back to the bee page
     this.props.history.push('/');
   }
   //handling the name change
   handleNameChange = (e) => {
+    e.preventDefault();
     this.setState({ nameId: e.target.value })
+  }
+
+  handleSubmitName = async (e) => {
+    e.preventDefault();
+
+    const newName = { name: this.state.beeName, friendliness: this.state.newFriend };
+    console.log(newName);
+    await newBeeName(newName);
+
+    await fetchNames();
+    this.setState({ beeName: '', newFriend: 0 });
   }
 
   render() {
@@ -82,7 +96,22 @@ export default class BeeInventor extends Component {
           </label>
           <button>Submit your bee</button>
         </form>
+        <div className="beeName">
+          <h2>Add a new type of bee</h2>
+          <form onSubmit={this.handleSubmitName}>
+            <label>
+              New Bee Type
+                <input onChange={e => this.setState({ beeName: e.target.value })} type="text" value={this.state.beeName} />
+            </label>
+            <label>
+              Inherent Friendliness
+                <input onChange={e => this.setState({ newFriend: e.target.value })} type="number" value={this.state.newFriend} />
+            </label>
+            <button>Submit</button>
+          </form>
+        </div>
       </div>
+
     )
   }
 }

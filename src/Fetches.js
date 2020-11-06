@@ -60,3 +60,13 @@ export async function deleteBee(someId) {
     throw err;
   }
 }
+
+export async function newBeeName(newName) {
+  try {
+    await request
+      .post(`${URL}friends`)
+      .send(newName);
+  } catch (err) {
+    throw err;
+  }
+}

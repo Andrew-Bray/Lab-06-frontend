@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { fetchBee, updateBee, fetchNames } from './Fetches.js';
+import { fetchBee, updateBee, fetchNames, deleteBee } from './Fetches.js';
 
 const genericUser = {
   userId: 1
@@ -19,6 +19,7 @@ export default class detail extends Component {
   componentDidMount = async () => {
     const names = await fetchNames(this.props.match.params.id);
     const bee = await fetchBee(this.props.match.params.id);
+    console.log(this.props.match.params.id);
 
     //NOW do a find where we return the 'names" where the names.name and the bee.name match
     const beeNameAsAString = bee.name;
@@ -31,7 +32,7 @@ export default class detail extends Component {
     this.setState({
       names: names,
       nameId: matchingName.id,
-      fr: bee.friendliness,
+      fr: matchingName.friendliness,
       dom: bee.domesticated,
       win: bee.winterization,
       char: bee.characteristics
@@ -63,6 +64,12 @@ export default class detail extends Component {
     this.setState({ nameId: e.target.value })
   }
 
+  removeBee = async () => {
+    await deleteBee(this.props.match.params.id);
+    this.props.history.push('/');
+
+  }
+
   render() {
     return (
       <div className="inventpage">
@@ -73,7 +80,7 @@ export default class detail extends Component {
               <select onChange={this.handleNameChange}>
               {this.state.names.map(name =>
                 <option
-                  selected={this.state.nameID === name.id}
+                  selected={this.state.nameId === name.id}
                   key={name.id}
                   value={name.id}>
                   {name.name}
@@ -95,7 +102,7 @@ export default class detail extends Component {
           </label>
           <label>
             How well do they handle cold winters?
-            <input value={this.state.win} vonChange={e => this.setState({ win: e.target.value })} type="number" />
+            <input value={this.state.win} onChange={e => this.setState({ win: e.target.value })} type="number" />
           </label>
           <label>
             Tell us a little about them
@@ -103,6 +110,9 @@ export default class detail extends Component {
           </label>
           <button>Submit your bee</button>
         </form>
+        <div className="delete-container">
+          <button onClick={this.removeBee}>Or, remove this bee</button>
+        </div>
       </div>
     )
   }

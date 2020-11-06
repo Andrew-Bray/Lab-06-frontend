@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import './App.css';
+import { Link } from 'react-router-dom';
 import { fetchBees } from './Fetches.js';
 
 export default class ListPage extends Component {
@@ -24,24 +25,27 @@ export default class ListPage extends Component {
             <div className="bee-container">
                 <h1>Chadwick's Collegiate Collection of the <i>Apis Mellifera</i></h1>
                 <h3>Where you find all of your bee needs solved</h3>
-
-                <section className="bee-list">
-                    {this.state.bees.map(bee =>
-                        <div className="bee-item">
-                            <h2>The {bee.name} Bee</h2>
-                            <p>Overwintering: {bee.winterization}</p>
-                            <p>{bee.characteristics}</p>
-                            <p>Friendliness Factor: {bee.friendliness}</p>
-                            {
-                                bee.domesticated
-                                    ? <div className="domesticated"> These ladies are domesticated
+                <div className="list-container">
+                    <section className="bee-list">
+                        {this.state.bees.map(bee =>
+                            <Link to={`/details/${bee.id}`}>
+                                <div className="bee-item">
+                                    <h2>The {bee.name} Bee</h2>
+                                    <p>Overwintering: {bee.winterization}</p>
+                                    <p>{bee.characteristics}</p>
+                                    <p>Friendliness Factor: {bee.friendliness}</p>
+                                    {
+                                        bee.domesticated
+                                            ? <div className="domesticated"> These ladies are domesticated
                                 </div> :
-                                    <div className="feral"> These girls are a wild bunch!
+                                            <div className="feral"> These girls are a wild bunch!
                                 </div>
-                            }
-                        </div>
-                    )}
-                </section>
+                                    }
+                                </div>
+                            </Link>
+                        )}
+                    </section>
+                </div>
 
             </div>
         )

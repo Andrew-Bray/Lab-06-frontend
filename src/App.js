@@ -13,7 +13,7 @@ import DetailPage from './DetailPage.js';
 export default class App extends Component {
   render() {
     return (
-      <div >
+      <div className="app-body">
         <Router>
           <Header />
           <Switch>
